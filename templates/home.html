@@ -119,6 +119,44 @@
 </div>
 
 </div>
+<h3 class="mt-5">City Mood Map</h3>
+<div id="moodMap" style="height: 500px; width: 100%; border-radius: 12px; margin-top: 20px;"></div>
+
+<!-- Leaflet CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    const moodColors = {
+        happy: 'yellow',
+        sad: 'blue',
+        angry: 'red',
+        calm: 'green'
+    };
+
+    const map = L.map('moodMap').setView([12.9716, 77.5946], 12);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    fetch('/mood-data/')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(point => {
+                const color = moodColors[point.mood] || 'gray';
+                L.circleMarker([point.latitude, point.longitude], {
+                    radius: 8,
+                    fillColor: color,
+                    color: '#000',
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map)
+                .bindPopup(`<b>Mood:</b> ${point.mood}`);
+            });
+        });
+</script>
 
 <!-- Footer -->
 <footer class="text-center py-3 mt-5">

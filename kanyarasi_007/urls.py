@@ -28,4 +28,5 @@ urlpatterns = [
     path("telescope/", views.telescope, name="telescope"),
     path("guide/", views.guide, name="guide"),
     path("messenger/", views.messenger, name="messenger"),
+    path('mood-data/', views.mood_data, name='mood_data'),
 ]
